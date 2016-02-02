@@ -9,6 +9,7 @@ defmodule LightSwitch do
     children = [
       # Define workers and child supervisors to be supervised
       worker(LightSwitch.StateMachine, [[]]),
+      worker(LightSwitch.HomeStateMachine, [[]]),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

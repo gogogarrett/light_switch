@@ -1,13 +1,25 @@
 defmodule LightSwitch.StateMachine do
   @name :LSFSM
+
   # Client api
-  def start_link(initial_state) do
+  def start_link(initial_state) when is_number(initial_state) do
+    :gen_fsm.start_link({:local, :"light_switch:#{initial_state}"}, __MODULE__, [], [])
+  end
+  def start_link(initial_state) when is_list(initial_state) do
     :gen_fsm.start_link({:local, @name}, __MODULE__, initial_state, [])
   end
 
-  def get_state, do: :gen_fsm.sync_send_event(@name, :get_state)
-  def flip_switch_up, do: :gen_fsm.send_event(@name, :flip_switch_up)
-  def flip_switch_down, do: :gen_fsm.send_event(@name, :flip_switch_down)
+  def get_state(pid \\ @name) do
+    :gen_fsm.sync_send_event(pid, :get_state)
+  end
+
+  def flip_switch_up(pid \\ @name) do
+    :gen_fsm.send_event(pid, :flip_switch_up)
+  end
+
+  def flip_switch_down(pid \\ @name) do
+    :gen_fsm.send_event(pid, :flip_switch_down)
+  end
 
   # GenFSM api
   def init(state) do
@@ -29,6 +41,14 @@ defmodule LightSwitch.StateMachine do
   end
 
   @doc """
+  Async event that flips the switch down..
+  which as a result does nothing because we're already off, silly goose.
+  """
+  def off(:flip_switch_down, state) do
+    {:next_state, :off, state}
+  end
+
+  @doc """
   Sync call that returns the current state of the state machine
   """
   def on(:get_state, _from, state) do
@@ -40,5 +60,13 @@ defmodule LightSwitch.StateMachine do
   """
   def on(:flip_switch_down, state) do
     {:next_state, :off, state}
+  end
+
+  @doc """
+  Async event that flips the switch up..
+  which as a result does nothing because we're already on, silly goose.
+  """
+  def on(:flip_switch_up, state) do
+    {:next_state, :on, state}
   end
 end

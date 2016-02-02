@@ -1,20 +1,22 @@
 # LightSwitch
 
-**TODO: Add description**
+A simple application to demonstrate how to use the [erlang gen_fsm](http://erlang.org/doc/man/gen_fsm.html) in an elixir project.
 
-## Installation
+# Usage
+```
+iex(1)> LightSwitch.StateMachine.get_state
+:off
+iex(2)> LightSwitch.StateMachine.flip_switch_up
+:ok
+iex(3)> LightSwitch.StateMachine.get_state
+:on
+iex(4)> LightSwitch.StateMachine.flip_switch_down
+:ok
+iex(5)> LightSwitch.StateMachine.get_state
+:off
+```
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
+## Things of note
 
-  1. Add light_switch to your list of dependencies in `mix.exs`:
-
-        def deps do
-          [{:light_switch, "~> 0.0.1"}]
-        end
-
-  2. Ensure light_switch is started before your application:
-
-        def application do
-          [applications: [:light_switch]]
-        end
-
+- [`sync_send_event`](http://erlang.org/doc/man/gen_fsm.html#sync_send_event-2) is SYNC and similar to [`call`](http://elixir-lang.org/docs/v1.0/elixir/GenServer.html#call/3) in GenServers.
+- [`send_event`](http://erlang.org/doc/man/gen_fsm.html#send_event-2) is ASYNC and similar to [`cast`](http://elixir-lang.org/docs/v1.0/elixir/GenServer.html#cast/2) in GenServers.

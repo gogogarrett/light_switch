@@ -42,6 +42,9 @@ iex(9)> LightSwitch.HomeStateMachine.get_all_light_states
 [:on, :off, :off, :on, :on, :off, :off, :on, :on, :off]
 ```
 
+# Presentation
+[speakerdeck here](https://speakerdeck.com/gogogarrett/gen-fsm-meets-elixir)
+
 # Things of note
 
 - [`sync_send_event`](http://erlang.org/doc/man/gen_fsm.html#sync_send_event-2) is SYNC and similar to [`call`](http://elixir-lang.org/docs/v1.0/elixir/GenServer.html#call/3) in GenServers.
